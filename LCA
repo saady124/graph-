@@ -1,0 +1,50 @@
+vector<vector<int>>up;
+vector<int>dep,in,out;
+vector<bool>vis;
+int tim;
+ 
+void build_ansectors(int u)
+{
+       vis[u]=1;
+       in[u]=tim++;
+       for(int j:adj[u])
+       {
+             if(!vis[j])
+             {
+                   up[j][0]=u;
+                   dep[j]=dep[u]+1;
+                   for(int i=1;i<20;i++)
+                       up[j][i]=up[up[j][i-1]][i-1];
+                   build_ansectors(j);
+             }
+       }
+       out[u]=tim++;
+}
+ 
+int k_th_asc(int u,int k)
+{
+         for(int i=0;i<20;i++)
+         {  
+                 if(k&(1<<i))
+                  u=up[u][i];
+         }
+         return u;
+}
+ 
+int lca(int a,int b)
+{
+         if(dep[b]<dep[a])
+            swap(a,b);
+         int dif=dep[b]-dep[a];
+         b=k_th_asc(b,dif);
+         if(a==b)return a;
+         for(int i=19;i>=0;i--)
+         {
+                if(up[a][i]!=up[b][i])
+                {
+                       a=up[a][i];
+                       b=up[b][i];
+                }
+         }
+         return up[a][0];
+}
