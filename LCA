@@ -1,4 +1,3 @@
-https://codeforces.com/contest/1738
 vector<vector<int>>up;
 vector<int>dep,in,out;
 vector<bool>vis;
